@@ -43,7 +43,7 @@ class _ConversationPageState extends State<ConversationPage> {
       errorMessage = "";
     });
 
-    final Uri uri = Uri.parse('http://127.0.0.1:8000/api/');
+    final Uri uri = Uri.parse('http://104.234.1.218:8000/api/');
 
     try {
       final response = await http.post(uri, body: {"username": username});
@@ -94,6 +94,9 @@ class _ConversationPageState extends State<ConversationPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
         // appBar: AppBar(
         //   title: Text('Chat App'),
@@ -118,6 +121,24 @@ class _ConversationPageState extends State<ConversationPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
+                padding: EdgeInsets.fromLTRB(screenWidth < 600 ? 30 : 120, 20,
+                    screenWidth < 600 ? 30 : 120, screenWidth < 600 ? 30 : 50),
+                child: Text(
+                  'سلام! من یه چت بات هستم که قراره بهت کمک کنم تا حالت بهتر شه.\n\n من بر اساس نظریه‌ی دلبستگی به خود کار میکنم که یه نظریه برای بهتر شدن حالت روحی افراد هست که چندین ساله داره روش کار میشه و طی تمرین‌هایی به بهتر شدن حال افراد کمک میکنه.\n در ادامه سعی کن به سوالام به صورت شفاف جواب بدی و میتونی باهام صحبت کنی تا به تمرینی که میتونه برات مناسب باشه برسیم.\n هرجایی هم هر سوالی در مورد نظریه داشتی میتونی روی آیکون لامپ توی چت‌بات کلیک کنی و ازم سوالت رو بپرسی.',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: screenHeight < 600
+                        ? 13.5
+                        : screenWidth < 600
+                            ? 15
+                            : 18,
+                  ),
+                  textAlign: TextAlign.center, // Center-align the text
+                  textDirection:
+                      TextDirection.rtl, // Right-to-left text direction
+                ),
+              ),
+              Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Container(
                   width: 500, // Set the desired width
@@ -132,8 +153,8 @@ class _ConversationPageState extends State<ConversationPage> {
               ),
               SizedBox(height: 30),
               Container(
-                width: 200,
-                height: 45,
+                width: screenWidth < 600 ? 150 : 200,
+                height: screenWidth < 600 ? 35 : 45,
                 child: ElevatedButton(
                   onPressed: startConversation,
                   style: ElevatedButton.styleFrom(
@@ -143,7 +164,7 @@ class _ConversationPageState extends State<ConversationPage> {
                     'شروع کنیم',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 18,
+                      fontSize: screenWidth < 600 ? 15 : 18,
                     ),
                   ),
                 ),
@@ -155,7 +176,7 @@ class _ConversationPageState extends State<ConversationPage> {
                 errorMessage,
                 style: TextStyle(
                   color: Colors.red,
-                  fontSize: 16,
+                  fontSize: screenWidth < 600 ? 14 : 16,
                 ),
               ),
             ],
@@ -165,3 +186,4 @@ class _ConversationPageState extends State<ConversationPage> {
     ]));
   }
 }
+

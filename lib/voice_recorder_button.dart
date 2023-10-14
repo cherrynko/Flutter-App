@@ -115,6 +115,13 @@ class _VoiceRecorderButtonState extends State<VoiceRecorderButton> {
         if (_isRecording) Text('در حال ضبط ...') else Text('صحبت کن'),
         ElevatedButton(
           onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                    'این قابلیت روی اپلیکیشن موبایل اندروید در دسترس می‌باشد. برای استفاده از آن میتوانید درخواست دهید.'),
+                duration: Duration(seconds: 2), // Adjust the duration
+              ),
+            );
             if (_isRecording) {
               _stopRecording();
               print("is reeeeeeee");
@@ -128,3 +135,4 @@ class _VoiceRecorderButtonState extends State<VoiceRecorderButton> {
     );
   }
 }
+

@@ -120,7 +120,7 @@ class _ChatAppState extends State<SecondPage> {
   }
 
   Future<List<Map<String, dynamic>>> fetchMessageFromAPI(String message) async {
-    final Uri uri = Uri.parse('http://127.0.0.1:8000/teacher/');
+    final Uri uri = Uri.parse('http://104.234.1.218:8000/teacher/');
 
     try {
       final response = await http.post(uri, body: {"question": message});
@@ -310,74 +310,92 @@ class ChatMessageBubble extends StatelessWidget {
   // Define the isWaiting flag
   final bool isWaiting;
 
-  ChatMessageBubble(
-      {required this.sender,
-      required this.message,
-      required this.title,
-      required this.isWaiting});
+  ChatMessageBubble({
+    required this.sender,
+    required this.message,
+    required this.title,
+    required this.isWaiting,
+  });
 
   @override
   Widget build(BuildContext context) {
     print(message);
     print(isWaiting);
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Column(
       children: [
         sender == 'bot'
             ? Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Row(children: <Widget>[
-                  Align(
-                    alignment: sender == 'user'
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
-                    child: Container(
-                      padding: EdgeInsets.all(12),
-                      constraints: BoxConstraints(
-                        maxWidth: sender == 'protocol' ? 650 : 750,
-                      ),
-                      decoration: BoxDecoration(
-                        color: sender == 'user'
-                            ? Colors.blueAccent
-                            : sender == 'protocol'
-                                ? Colors.green
-                                : Colors.grey[300],
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(16),
-                          topRight: Radius.circular(sender == 'user' ? 16 : 0),
-                          bottomLeft: Radius.circular(16),
-                          bottomRight:
-                              Radius.circular(sender == 'user' ? 0 : 16),
+                child: Row(
+                  children: <Widget>[
+                    Align(
+                      alignment: sender == 'user'
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft,
+                      child: Container(
+                        padding: EdgeInsets.all(12),
+                        constraints: BoxConstraints(
+                          maxWidth: screenWidth < 600
+                              ? sender == 'protocol'
+                                  ? 300
+                                  : 300
+                              : sender == 'protocol'
+                                  ? 650
+                                  : 750,
                         ),
-                      ),
-                      child: sender == 'protocol'
-                          ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  title,
+                        decoration: BoxDecoration(
+                          color: sender == 'user'
+                              ? Colors.blueAccent
+                              : sender == 'protocol'
+                                  ? Colors.green
+                                  : Colors.grey[300],
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(16),
+                            topRight:
+                                Radius.circular(sender == 'user' ? 16 : 0),
+                            bottomLeft: Radius.circular(16),
+                            bottomRight:
+                                Radius.circular(sender == 'user' ? 0 : 16),
+                          ),
+                        ),
+                        child: sender == 'protocol'
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    title,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: screenWidth < 600 ? 14.5 : 17,
+                                    ),
+                                  ),
+                                  Directionality(
+                                    textDirection: TextDirection.rtl,
+                                    child: Text(
+                                      message.substring(title.length).trim(),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Directionality(
+                                textDirection: TextDirection.rtl,
+                                child: Text(
+                                  message,
                                   style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17,
+                                    color: sender == 'user'
+                                        ? Colors.white
+                                        : Colors.black,
+                                    fontSize: screenWidth < 600 ? 14.5 : 17,
                                   ),
                                 ),
-                                Text(
-                                  message.substring(title.length).trim(),
-                                ),
-                              ],
-                            )
-                          : Text(
-                              message,
-                              style: TextStyle(
-                                color: sender == 'user'
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 17,
                               ),
-                            ),
+                      ),
                     ),
-                  ),
-                ]))
+                  ],
+                ),
+              )
             : Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Align(
@@ -387,7 +405,13 @@ class ChatMessageBubble extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.all(12),
                     constraints: BoxConstraints(
-                      maxWidth: sender == 'protocol' ? 650 : 750,
+                      maxWidth: screenWidth < 600
+                          ? sender == 'protocol'
+                              ? 300
+                              : 300
+                          : sender == 'protocol'
+                              ? 650
+                              : 750,
                     ),
                     decoration: BoxDecoration(
                       color: sender == 'user'
@@ -410,21 +434,27 @@ class ChatMessageBubble extends StatelessWidget {
                                 title,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 17,
+                                  fontSize: screenWidth < 600 ? 14.5 : 17,
                                 ),
                               ),
-                              Text(
-                                message.substring(title.length).trim(),
+                              Directionality(
+                                textDirection: TextDirection.rtl,
+                                child: Text(
+                                  message.substring(title.length).trim(),
+                                ),
                               ),
                             ],
                           )
-                        : Text(
-                            message,
-                            style: TextStyle(
-                              color: sender == 'user'
-                                  ? Colors.white
-                                  : Colors.black,
-                              fontSize: 17,
+                        : Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Text(
+                              message,
+                              style: TextStyle(
+                                color: sender == 'user'
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontSize: screenWidth < 600 ? 14.5 : 17,
+                              ),
                             ),
                           ),
                   ),
@@ -474,6 +504,8 @@ class ChatInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
       padding: EdgeInsets.all(16),
       color: Colors.grey[300],
@@ -490,7 +522,8 @@ class ChatInput extends StatelessWidget {
                       20), // Set the desired border radius
                 ),
                 hintText:
-                    '(: هر سوالی که در مورد دلبستگی به خود داری میتونی ازم بپرسی',
+                    'هر سوالی در مورد دلبستگی به خود داری میتونی ازم بپرسی :) مثلا؛ دلبستگی به خود چیه؟',
+                hintStyle: TextStyle(fontSize: screenWidth < 600 ? 13 : 18),
                 alignLabelWithHint: true, // Align the hint text to the right
               ),
             ),
@@ -500,8 +533,8 @@ class ChatInput extends StatelessWidget {
             borderRadius:
                 BorderRadius.circular(10), // Set the desired border radius
             child: SizedBox(
-              width: 150, // Set the desired width
-              height: 50, // Set the desired height
+              width: screenWidth < 600 ? 80 : 150, // Set the desired width
+              height: screenWidth < 600 ? 30 : 50, // Set the desired height
               child: ElevatedButton(
                 onPressed: () => onPressed(messageController.text),
                 style: ElevatedButton.styleFrom(
@@ -511,7 +544,7 @@ class ChatInput extends StatelessWidget {
                   'پرسیدن سوال',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: screenWidth < 600 ? 14 : 16,
                   ),
                 ),
               ),
@@ -522,3 +555,4 @@ class ChatInput extends StatelessWidget {
     );
   }
 }
+

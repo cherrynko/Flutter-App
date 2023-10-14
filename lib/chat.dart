@@ -10,6 +10,7 @@ import 'dart:convert' show utf8;
 import 'package:sat_project/three_dots.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:sat_project/voice_recorder_button.dart';
+import 'faq_component.dart';
 
 // void main() {
 //   runApp(ChatApp());
@@ -258,7 +259,7 @@ class _ChatAppState extends State<ChatApp> {
       isWaiting.add(true);
     });
 
-    final Uri uri = Uri.parse('http://127.0.0.1:8000/api/');
+    final Uri uri = Uri.parse('http://104.234.1.218:8000/api/');
 
     try {
       final response = await http
@@ -424,14 +425,22 @@ class _ChatAppState extends State<ChatApp> {
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,
-                itemCount: chat.length,
+                itemCount: chat.length + 1, // Add 1 for the FAQComponent
                 itemBuilder: (context, index) {
-                  return ChatMessageBubble(
-                    sender: chat[index]['sender']!,
-                    message: chat[index]['message']!,
-                    title: title,
-                    isWaiting: true,
-                  );
+                  if (index == 0) {
+                    // Display the FAQComponent as the first item
+                    return FAQComponent();
+                  } else {
+                    // Display the regular chat items
+                    final chatIndex = index - 1;
+                    return ChatMessageBubble(
+                      sender: chat[chatIndex]['sender']!,
+                      message: chat[chatIndex]['message']!,
+                      title: title,
+                      isWaiting: true,
+                      context: context,
+                    );
+                  }
                 },
               ),
             ),
@@ -533,6 +542,7 @@ class ChatMessageBubble extends StatelessWidget {
   final String sender;
   final String message;
   final String title;
+  final BuildContext context;
   AudioPlayer audioPlayer = AudioPlayer();
 
   // Define the isWaiting flag
@@ -542,9 +552,17 @@ class ChatMessageBubble extends StatelessWidget {
       {required this.sender,
       required this.message,
       required this.title,
-      required this.isWaiting});
+      required this.isWaiting,
+      required this.context});
 
   Future<void> playAudio(Source audioUrl) async {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+            'فکر میکنم مشکلی پیش اومده. در حال حاضر امکان پخش صدا وجود ندارد.'),
+        duration: Duration(seconds: 2), // Adjust the duration
+      ),
+    );
     await audioPlayer.play(audioUrl);
   }
 
@@ -552,6 +570,8 @@ class ChatMessageBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     print(message);
     print(isWaiting);
+
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Column(
       children: [
@@ -562,11 +582,19 @@ class ChatMessageBubble extends StatelessWidget {
                   Align(
                     alignment: sender == 'user'
                         ? Alignment.centerRight
-                        : Alignment.centerLeft,
+                        : Alignment.centerRight,
                     child: Container(
                       padding: EdgeInsets.all(12),
                       constraints: BoxConstraints(
-                        maxWidth: sender == 'protocol' ? 650 : 750,
+                        maxWidth: screenWidth < 500
+                            ? 300
+                            : screenWidth < 750
+                                ? sender == 'protocol'
+                                    ? 350
+                                    : 400
+                                : sender == 'protocol'
+                                    ? 650
+                                    : 750,
                       ),
                       decoration: BoxDecoration(
                         color: sender == 'user'
@@ -590,21 +618,30 @@ class ChatMessageBubble extends StatelessWidget {
                                   title,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 17,
+                                    fontSize: screenWidth < 600 ? 14.5 : 17,
                                   ),
                                 ),
-                                Text(
-                                  message.substring(title.length).trim(),
+                                Directionality(
+                                  textDirection: TextDirection.rtl,
+                                  child: Text(
+                                    message.substring(title.length).trim(),
+                                    style: TextStyle(
+                                      fontSize: screenWidth < 600 ? 14.5 : 18,
+                                    ),
+                                  ),
                                 ),
                               ],
                             )
-                          : Text(
-                              message,
-                              style: TextStyle(
-                                color: sender == 'user'
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontSize: 17,
+                          : Directionality(
+                              textDirection: TextDirection.rtl,
+                              child: Text(
+                                message,
+                                style: TextStyle(
+                                  color: sender == 'user'
+                                      ? Colors.white
+                                      : Colors.black,
+                                  fontSize: screenWidth < 600 ? 14.5 : 17,
+                                ),
                               ),
                             ),
                     ),
@@ -626,11 +663,19 @@ class ChatMessageBubble extends StatelessWidget {
                 child: Align(
                   alignment: sender == 'user'
                       ? Alignment.centerRight
-                      : Alignment.centerLeft,
+                      : Alignment.centerRight,
                   child: Container(
                     padding: EdgeInsets.all(12),
                     constraints: BoxConstraints(
-                      maxWidth: sender == 'protocol' ? 650 : 750,
+                      maxWidth: screenWidth < 500
+                          ? 300
+                          : screenWidth < 750
+                              ? sender == 'protocol'
+                                  ? 350
+                                  : 400
+                              : sender == 'protocol'
+                                  ? 650
+                                  : 750,
                     ),
                     decoration: BoxDecoration(
                       color: sender == 'user'
@@ -653,25 +698,30 @@ class ChatMessageBubble extends StatelessWidget {
                                 title,
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 17,
+                                  fontSize: screenWidth < 600 ? 14.5 : 17,
                                 ),
                               ),
-                              Text(
-                                message.substring(title.length).trim(),
-                                textAlign: TextAlign.right,
-                                style: TextStyle(
-                                  fontSize: 18,
+                              Directionality(
+                                textDirection: TextDirection.rtl,
+                                child: Text(
+                                  message.substring(title.length).trim(),
+                                  style: TextStyle(
+                                    fontSize: screenWidth < 600 ? 14.5 : 18,
+                                  ),
                                 ),
                               ),
                             ],
                           )
-                        : Text(
-                            message,
-                            style: TextStyle(
-                              color: sender == 'user'
-                                  ? Colors.white
-                                  : Colors.black,
-                              fontSize: 17,
+                        : Directionality(
+                            textDirection: TextDirection.rtl,
+                            child: Text(
+                              message,
+                              style: TextStyle(
+                                color: sender == 'user'
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontSize: screenWidth < 600 ? 14.5 : 17,
+                              ),
                             ),
                           ),
                   ),
@@ -698,16 +748,18 @@ class ButtonGroup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      width: 700,
-      height: 80,
+      width: screenWidth < 600 ? 300 : 700,
+      height: screenWidth < 600 ? 70 : 80,
       padding: EdgeInsets.all(16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: buttons.map((button) {
           return Container(
-            width: 300,
-            height: 80,
+            width: screenWidth < 600 ? 120 : 300,
+            height: screenWidth < 600 ? 45 : 80,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
                 primary: Colors.blue, // Set the background color to blue
@@ -718,7 +770,7 @@ class ButtonGroup extends StatelessWidget {
                 button,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 16,
+                  fontSize: screenWidth < 600 ? 14.5 : 16,
                 ),
               ),
             ),
@@ -737,6 +789,8 @@ class ChatInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Container(
@@ -744,16 +798,19 @@ class ChatInput extends StatelessWidget {
         color: Colors.grey[300],
         child: Row(
           children: [
-            VoiceRecorderButton(
-              uploadUrl: 'https://your-server.com/upload-audio',
+            Visibility(
+              visible: screenWidth > 600,
+              child: VoiceRecorderButton(
+                uploadUrl: 'https://your-server.com/upload-audio',
+              ),
             ),
             SizedBox(width: 8),
             ClipRRect(
               borderRadius:
                   BorderRadius.circular(10), // Set the desired border radius
               child: SizedBox(
-                width: 150, // Set the desired width
-                height: 50, // Set the desired height
+                width: screenWidth < 600 ? 80 : 150, // Set the desired width
+                height: screenWidth < 600 ? 35 : 50, // Set the desired height
                 child: ElevatedButton(
                   onPressed: () => onPressed(messageController.text),
                   style: ElevatedButton.styleFrom(
@@ -763,7 +820,7 @@ class ChatInput extends StatelessWidget {
                     'ارسال پیام',
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 16,
+                      fontSize: screenWidth < 600 ? 12 : 16,
                     ),
                   ),
                 ),
@@ -780,6 +837,7 @@ class ChatInput extends StatelessWidget {
                         20), // Set the desired border radius
                   ),
                   hintText: '...پیام خود را وارد کنید',
+                  hintStyle: TextStyle(fontSize: screenWidth < 600 ? 13 : 18),
                   alignLabelWithHint: true, // Align the hint text to the right
                 ),
               ),
@@ -789,8 +847,8 @@ class ChatInput extends StatelessWidget {
               borderRadius:
                   BorderRadius.circular(10), // Set the desired border radius
               child: SizedBox(
-                width: 100, // Set the desired width
-                height: 50, // Set the desired height
+                width: screenWidth < 600 ? 40 : 100, // Set the desired width
+                height: screenWidth < 600 ? 30 : 50, // Set the desired height
                 child: ElevatedButton(
                   onPressed: () {
                     // Navigate to the SecondPage when the button is clicked
@@ -804,7 +862,9 @@ class ChatInput extends StatelessWidget {
                         Colors.orange, // Set the background color to orange
                   ),
                   child: Image.asset('assets/help.png',
-                      width: 30, height: 30, fit: BoxFit.cover),
+                      width: screenWidth < 600 ? 20 : 30,
+                      height: screenWidth < 600 ? 20 : 30,
+                      fit: BoxFit.cover),
                 ),
               ),
             ),
@@ -814,3 +874,4 @@ class ChatInput extends StatelessWidget {
     );
   }
 }
+
