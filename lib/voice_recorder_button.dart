@@ -118,7 +118,7 @@ class _VoiceRecorderButtonState extends State<VoiceRecorderButton> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                    'این قابلیت روی اپلیکیشن موبایل اندروید در دسترس می‌باشد. برای استفاده از آن میتوانید درخواست دهید.'),
+                    'یہ فیچر اینڈرائیڈ موبائل ایپلیکیشن پر دستیاب ہے۔ آپ اسے استعمال کرنے کے لیے درخواست دے سکتے ہیں۔'),
                 duration: Duration(seconds: 2), // Adjust the duration
               ),
             );

@@ -33,7 +33,7 @@ class _ConversationPageState extends State<ConversationPage> {
     if (username.isEmpty || username.length < 4) {
       setState(() {
         errorMessage =
-            "نام کاربری نمی‌تواند خالی باشد و باید حداقل ۴ کاراکتر داشته باشد";
+            "صارف کا نام خالی نہیں ہو سکتا اور کم از کم ۴ حروف کا ہونا لازمی ہے";
       });
       return;
     }
@@ -43,7 +43,7 @@ class _ConversationPageState extends State<ConversationPage> {
       errorMessage = "";
     });
 
-    final Uri uri = Uri.parse('http://104.234.1.218:8000/api/');
+    final Uri uri = Uri.parse('http://127.0.0.1:8000/api/');
 
     try {
       final response = await http.post(uri, body: {"username": username});
@@ -107,7 +107,7 @@ class _ConversationPageState extends State<ConversationPage> {
         padding: EdgeInsets.all(16),
         color: Colors.blue,
         child: Text(
-          'بات دلبستگی به خود',
+          'خود سے لگاؤ',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.white,
@@ -124,7 +124,7 @@ class _ConversationPageState extends State<ConversationPage> {
                 padding: EdgeInsets.fromLTRB(screenWidth < 600 ? 30 : 120, 20,
                     screenWidth < 600 ? 30 : 120, screenWidth < 600 ? 30 : 50),
                 child: Text(
-                  'سلام! من یه چت بات هستم که قراره بهت کمک کنم تا حالت بهتر شه.\n\n من بر اساس نظریه‌ی دلبستگی به خود کار میکنم که یه نظریه برای بهتر شدن حالت روحی افراد هست که چندین ساله داره روش کار میشه و طی تمرین‌هایی به بهتر شدن حال افراد کمک میکنه.\n در ادامه سعی کن به سوالام به صورت شفاف جواب بدی و میتونی باهام صحبت کنی تا به تمرینی که میتونه برات مناسب باشه برسیم.\n هرجایی هم هر سوالی در مورد نظریه داشتی میتونی روی آیکون لامپ توی چت‌بات کلیک کنی و ازم سوالت رو بپرسی.',
+                  'ہیلو! میں ایک چیٹ بٹ ہوں جو آپ کی مدد کرنے کے لئے بنایا گیا ہے تاکہ آپ کا مزاج بہتر ہو۔\n\n میں خود کو محبت کی نظریہ پر مبنی بٹ مانتا ہوں جو افراد کی روحانی حالت کو بہتر بنانے کے لئے ایک نظریہ ہے جو کئے جانے والے سالوں سے استعمال ہو رہا ہے اور تجربات کے ذریعے افراد کی حالت کو بہتر بنانے میں مدد فراہم کرتا ہے۔\n آئیے، آپ سوالات کو واضح طریقے سے جواب دیں اور مجھ سے بات چیت کریں تاکہ میں آپ کو ایک موزوں مشق کی سرگرمی دوں جو آپ کے لئے موزوں ہوسکتی ہے۔\n اگر آپ کو نظریے کے بارے میں کوئی سوال ہے تو آپ میرے چیٹ بٹ میں روشنی کے آئیکن پر کلک کرکے مجھ سے سوال کر سکتے ہیں۔',
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: screenHeight < 600
@@ -133,19 +133,19 @@ class _ConversationPageState extends State<ConversationPage> {
                             ? 15
                             : 18,
                   ),
-                  textAlign: TextAlign.center, // Center-align the text
+                  textAlign: TextAlign.center, // متن کو وسط میں الائن کریں
                   textDirection:
-                      TextDirection.rtl, // Right-to-left text direction
+                      TextDirection.rtl, // متن کی سمت دائیں سے بائیں کی طرف
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Container(
-                  width: 500, // Set the desired width
+                  width: 500, // مطلوبہ چوڑائی مقرر کریں
                   child: TextField(
                     controller: _usernameController,
                     decoration: InputDecoration(
-                      hintText: 'نام کاربری مد نظرت رو وارد کن',
+                      hintText: 'آپ کا مطلوبہ صارف کا نام درج کریں',
                       hintTextDirection: TextDirection.rtl,
                     ),
                   ),
@@ -158,10 +158,10 @@ class _ConversationPageState extends State<ConversationPage> {
                 child: ElevatedButton(
                   onPressed: startConversation,
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.blue, // Set the background color to orange
+                    backgroundColor: Colors.blue, // Set the background color to orange
                   ),
                   child: Text(
-                    'شروع کنیم',
+                    'شروع کریں',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: screenWidth < 600 ? 15 : 18,

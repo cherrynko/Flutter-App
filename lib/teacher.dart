@@ -120,7 +120,7 @@ class _ChatAppState extends State<SecondPage> {
   }
 
   Future<List<Map<String, dynamic>>> fetchMessageFromAPI(String message) async {
-    final Uri uri = Uri.parse('http://104.234.1.218:8000/teacher/');
+    final Uri uri = Uri.parse('http://127.0.0.1:8000/api/');
 
     try {
       final response = await http.post(uri, body: {"question": message});
@@ -194,7 +194,7 @@ class _ChatAppState extends State<SecondPage> {
           ),
           backgroundColor: Colors.orange,
           title: Text(
-            'معلم دلبستگی به خود',
+            'خود سے لگاؤ ​​کا استا',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.white,
@@ -221,7 +221,7 @@ class _ChatAppState extends State<SecondPage> {
             if (end == 'end')
               ElevatedButton(
                 onPressed: restart,
-                child: Text('شروع مجدد'),
+                child: Text('دوبارہ شروع کریں'),
               ),
             if (end != 'end')
               Column(
@@ -522,7 +522,7 @@ class ChatInput extends StatelessWidget {
                       20), // Set the desired border radius
                 ),
                 hintText:
-                    'هر سوالی در مورد دلبستگی به خود داری میتونی ازم بپرسی :) مثلا؛ دلبستگی به خود چیه؟',
+                   'آپ مجھ سے خود سے منسلک ہونے کے بارے میں کوئی سوال پوچھ سکتے ہیں :) مثال کے طور پر؛ خود سے لگاؤ ​​کیا ہے؟',
                 hintStyle: TextStyle(fontSize: screenWidth < 600 ? 13 : 18),
                 alignLabelWithHint: true, // Align the hint text to the right
               ),
@@ -538,10 +538,10 @@ class ChatInput extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () => onPressed(messageController.text),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.orange, // Set the background color to orange
+                  backgroundColor: Colors.orange, // Set the background color to orange
                 ),
                 child: Text(
-                  'پرسیدن سوال',
+                  'سوالات پوچھنا',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: screenWidth < 600 ? 14 : 16,

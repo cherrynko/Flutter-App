@@ -259,7 +259,7 @@ class _ChatAppState extends State<ChatApp> {
       isWaiting.add(true);
     });
 
-    final Uri uri = Uri.parse('http://104.234.1.218:8000/api/');
+    final Uri uri = Uri.parse('http://127.0.0.1:8000/api/');
 
     try {
       final response = await http
@@ -414,7 +414,7 @@ class _ChatAppState extends State<ChatApp> {
               padding: EdgeInsets.all(16),
               color: Colors.blue,
               child: Text(
-                'بات دلبستگی به خود',
+               'خود سے محبت کی بات',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -450,11 +450,11 @@ class _ChatAppState extends State<ChatApp> {
                 child: ElevatedButton(
                   onPressed: restart,
                   child: Text(
-                    'شروع مجدد',
+                   'دوبارہ شروع کریں',
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.purple, // Set the background color to blue
+                    backgroundColor: Colors.purple, // Set the background color to blue
                     minimumSize: Size(120, 60), // Set the minimum size
                   ),
                 ),
@@ -559,8 +559,10 @@ class ChatMessageBubble extends StatelessWidget {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-            'فکر میکنم مشکلی پیش اومده. در حال حاضر امکان پخش صدا وجود ندارد.'),
-        duration: Duration(seconds: 2), // Adjust the duration
+          'مجھے لگتا ہے کہ کوئی مسئلہ پیش آیا ہے۔ فی الحال آواز کی پخش ممکن نہیں ہے۔',
+          textAlign: TextAlign.center,
+        ),
+        duration: Duration(seconds: 2), // مدت کو ترتیب دیں
       ),
     );
     await audioPlayer.play(audioUrl);
@@ -762,7 +764,7 @@ class ButtonGroup extends StatelessWidget {
             height: screenWidth < 600 ? 45 : 80,
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.blue, // Set the background color to blue
+                backgroundColor: Colors.blue, // Set the background color to blue
                 minimumSize: Size(200, 90), // Set the minimum size
               ),
               onPressed: () => onPressed(button),
@@ -814,7 +816,7 @@ class ChatInput extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () => onPressed(messageController.text),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.blue, // Set the background color to orange
+                    backgroundColor: Colors.blue, // Set the background color to orange
                   ),
                   child: Text(
                     'ارسال پیام',
@@ -836,7 +838,7 @@ class ChatInput extends StatelessWidget {
                     borderRadius: BorderRadius.circular(
                         20), // Set the desired border radius
                   ),
-                  hintText: '...پیام خود را وارد کنید',
+                  hintText: 'اپنا پیغام یہاں درج کریں...',
                   hintStyle: TextStyle(fontSize: screenWidth < 600 ? 13 : 18),
                   alignLabelWithHint: true, // Align the hint text to the right
                 ),
@@ -858,8 +860,7 @@ class ChatInput extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    primary:
-                        Colors.orange, // Set the background color to orange
+                    backgroundColor: Colors.orange, // Set the background color to orange
                   ),
                   child: Image.asset('assets/help.png',
                       width: screenWidth < 600 ? 20 : 30,
